@@ -4,8 +4,6 @@
 
 <!-- ![GigaGears Banner](https://via.placeholder.com/1200x400?text=GigaGears+Banner)   -->
 
----
-
 ## **📌 Features**
 
 ### **🛍️ User Features**
@@ -22,8 +20,6 @@
 ✅ Order & inventory management  
 ✅ User role management  
 ✅ Dashboard analytics
-
----
 
 ## **🖥️ Tech Stack**
 
@@ -42,8 +38,6 @@
 ## **📜 License**
 
 This project is licensed under the **MIT License**.
-
----
 
 ## **📞 Contact**
 
