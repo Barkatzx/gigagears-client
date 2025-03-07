@@ -1,4 +1,3 @@
-import { Menu } from "@headlessui/react";
 import { useState } from "react";
 import { FaSearch, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { RiLoginBoxFill } from "react-icons/ri";
@@ -8,7 +7,7 @@ const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
-    <nav className=" bg-white shadow-sm lg:px-40 py-5 px-5">
+    <nav className="container mx-auto bg-white shadow-sm lg:px-40 py-5 px-5">
       <div className="flex items-center justify-between">
         {/* Left: Logo */}
         <a href="/" className="text-2xl font-bold">
@@ -48,88 +47,52 @@ const NavBar = () => {
 
           {/* Cart Icon */}
           <a href="/cart" className="relative">
-            <FaShoppingCart className="text-2xl hover:text-gray-400" />
-            <span className="absolute -top-2 -right-2 bg-red-500 text-xs rounded-full px-1">
+            <FaShoppingCart className="text-2xl hover:text-blue-600" />
+            <span className="absolute -top-2 -right-2 bg-blue-600 text-xs text-white rounded-full px-1">
               2
             </span>
           </a>
 
           {/* User Avatar Dropdown */}
-          <Menu as="div" className="relative">
-            <Menu.Button className="focus:outline-none">
-              <FaUserCircle className="text-3xl cursor-pointer hover:text-gray-400" />
-            </Menu.Button>
-            <Menu.Items className="absolute right-0 mt-2 w-48 bg-gray-100 text-black rounded-sm shadow-sm overflow-hidden">
+          <div className="dropdown dropdown-end">
+            <label tabIndex={0} className="btn btn-ghost btn-circle">
+              <FaUserCircle className="text-2xl cursor-pointer hover:text-blue-600" />
+            </label>
+            <ul
+              tabIndex={0}
+              className="dropdown-content menu p-2 shadow bg-gray-100 rounded-md w-48"
+            >
               {isLoggedIn ? (
                 <>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        href="/profile"
-                        className={`block px-4 py-2 ${
-                          active ? "bg-gray-200" : ""
-                        }`}
-                      >
-                        Profile
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        href="/settings"
-                        className={`block px-4 py-2 ${
-                          active ? "bg-gray-200" : ""
-                        }`}
-                      >
-                        Settings
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <button
-                        className={`block w-full text-left px-4 py-2 ${
-                          active ? "bg-gray-200" : ""
-                        }`}
-                        onClick={() => setIsLoggedIn(false)}
-                      >
-                        Log Out
-                      </button>
-                    )}
-                  </Menu.Item>
+                  <li>
+                    <a href="/profile">Profile</a>
+                  </li>
+                  <li>
+                    <a href="/settings">Settings</a>
+                  </li>
+                  <li>
+                    <button onClick={() => setIsLoggedIn(false)}>
+                      Log Out
+                    </button>
+                  </li>
                 </>
               ) : (
                 <>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        href="/login"
-                        className={`block px-4 py-2 flex gap-2 items-center ${
-                          active ? "bg-gray-200" : ""
-                        }`}
-                      >
-                        <RiLoginBoxFill /> Login
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <hr className=" text-gray-300" />
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        href="/signup"
-                        className={`block px-4 py-2 flex gap-2 items-center ${
-                          active ? "bg-gray-200" : ""
-                        }`}
-                      >
-                        <SiGnuprivacyguard /> Sign Up
-                      </a>
-                    )}
-                  </Menu.Item>
+                  <li>
+                    <a href="/login" className="flex items-center gap-2">
+                      <RiLoginBoxFill /> Login
+                    </a>
+                  </li>
+                  <hr className="my-1 text-gray-200" />
+                  <li>
+                    <a href="/signup" className="flex items-center gap-2">
+                      <SiGnuprivacyguard /> Sign Up
+                    </a>
+                  </li>
                 </>
               )}
-            </Menu.Items>
-          </Menu>
+            </ul>
+          </div>
         </div>
       </div>
     </nav>

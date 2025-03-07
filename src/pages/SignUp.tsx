@@ -1,10 +1,22 @@
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaUser } from "react-icons/fa";
+import { FaUpload, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
 
 const SignUp = () => {
+  // Image Upload State
+  const [image, setImage] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Handle File Selection
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImage(URL.createObjectURL(file));
+    }
+  };
   const {
     register,
     handleSubmit,
@@ -37,6 +49,37 @@ const SignUp = () => {
           🚀 Ready to Register?
         </h3>
         <form onSubmit={handleSubmit(onSubmit)}>
+          {/* Profile Picture Upload */}
+          <div className="mb-6 p-6 rounded-lg text-left bg-gray-100">
+            {/* Display Image Preview If Available */}
+            {image ? (
+              <img
+                src={image}
+                alt="Uploaded Preview"
+                className="w-32 h-32 mb-2 rounded-lg"
+              />
+            ) : (
+              <p className="text-gray-700">No image uploaded</p>
+            )}
+
+            {/* Upload Button */}
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium cursor-pointer flex items-center gap-2 hover:bg-blue-700 transition"
+            >
+              <FaUpload />
+              Upload Image
+            </button>
+
+            {/* Hidden File Input */}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+            />
+          </div>
           {/* Name Input */}
           <div className="mb-6">
             <label
@@ -115,23 +158,6 @@ const SignUp = () => {
                 Password must contain at least one uppercase, one lowercase, one
                 number, and one special character.
               </p>
-            )}
-          </div>
-
-          {/* Photo URL Input */}
-          <div className="mb-6">
-            <label htmlFor="photoURL" className="text-gray-700 font-bold mb-2">
-              Photo URL
-            </label>
-            <input
-              type="text"
-              {...register("photoURL", { required: true })}
-              id="photoURL"
-              className="w-full px-3 py-2 border border-gray-100 bg-gray-100 rounded-lg focus:outline-none focus:border-indigo-500"
-              placeholder="Enter your photo URL"
-            />
-            {errors.photoURL && (
-              <span className="text-red-600">Photo URL is required</span>
             )}
           </div>
 
