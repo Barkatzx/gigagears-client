@@ -1,54 +1,52 @@
-# React + TypeScript + Vite
+### **🖥️ GigaGears - Premium Computer Accessories Store**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🚀 **GigaGears** is a modern e-commerce platform built with the **MERN Stack** that specializes in selling high-quality **computer accessories**. It features a seamless shopping experience with **user authentication, product management, payment integration, and an intuitive admin panel**.
 
-Currently, two official plugins are available:
+<!-- ![GigaGears Banner](https://via.placeholder.com/1200x400?text=GigaGears+Banner)   -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## **📌 Features**
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### **🛍️ User Features**
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+✅ Secure authentication (Login, Register)  
+✅ Browse & search products with categories and filters  
+✅ Add to cart and checkout with Stripe payment  
+✅ Product reviews and ratings  
+✅ Order tracking and history
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### **🛠️ Admin Features**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+✅ Product management (Add, Edit, Delete)  
+✅ Order & inventory management  
+✅ User role management  
+✅ Dashboard analytics
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+---
+
+## **🖥️ Tech Stack**
+
+| Technology        | Purpose                                              |
+| ----------------- | ---------------------------------------------------- |
+| **MongoDB**       | NoSQL database for product & user data               |
+| **Express.js**    | Backend framework for API handling                   |
+| **React.js**      | Frontend library for UI components                   |
+| **Node.js**       | Backend runtime for server-side logic                |
+| **TypeScript**    | Strongly typed JavaScript for better maintainability |
+| **Redux Toolkit** | State management for seamless data flow              |
+| **Stripe API**    | Secure payment processing                            |
+| **Tailwind CSS**  | Modern, responsive UI design                         |
+|                   |
+
+## **📜 License**
+
+This project is licensed under the **MIT License**.
+
+---
+
+## **📞 Contact**
+
+For queries or contributions, reach out to me:  
+📧 **Email:** barkatullah.zx@gmail.com  
+📂 **GitHub:** [Barkatzx](https://github.com/Barkatzx)
