@@ -1,7 +1,13 @@
+import { Outlet } from "react-router";
+import Footer from "./pages/Footer";
+import NavBar from "./pages/NavBar";
+
 const App = () => {
   return (
-    <div>
-      <h1 className="text-3xl font-bold underline bg-gray-600">Hello world!</h1>
+    <div className="container mx-auto">
+      <NavBar />
+      <Outlet />
+      <Footer />
     </div>
   );
 };
