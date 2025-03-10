@@ -1,10 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaSearch, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { RiLoginBoxFill } from "react-icons/ri";
 import { SiGnuprivacyguard } from "react-icons/si";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  // Check if the user is logged in on component mount
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  // Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove the token
+    localStorage.removeItem("user"); // Remove user data
+    setIsLoggedIn(false); // Update login state
+    navigate("/login"); // Redirect to login page
+  };
 
   return (
     <nav className="container mx-auto bg-white shadow-sm lg:px-40 py-5 px-5">
@@ -17,13 +35,13 @@ const NavBar = () => {
         {/* Center: Navigation Links */}
         <ul className="hidden md:flex space-x-6 text-sm font-semibold">
           <li>
-            <a href="/shop" className="hover:text-blue-600">
-              Shop
+            <a href="/" className="hover:text-blue-600">
+              Home
             </a>
           </li>
           <li>
             <a href="/about" className="hover:text-blue-600">
-              About
+              Shop
             </a>
           </li>
           <li>
@@ -71,9 +89,7 @@ const NavBar = () => {
                     <a href="/settings">Settings</a>
                   </li>
                   <li>
-                    <button onClick={() => setIsLoggedIn(false)}>
-                      Log Out
-                    </button>
+                    <button onClick={handleLogout}>Log Out</button>
                   </li>
                 </>
               ) : (

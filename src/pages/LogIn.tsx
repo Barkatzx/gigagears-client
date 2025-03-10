@@ -1,8 +1,61 @@
+import axios from "axios";
+import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const LogIn = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+
+        // Show success alert
+        Swal.fire({
+          title: "Login Successful!",
+          text: "You are now logged in.",
+          icon: "success",
+          confirmButtonText: "Go to Homepage",
+        }).then(() => {
+          navigate("/"); // Redirect to homepage after clicking "OK"
+        });
+      } else {
+        setError(response.data.message);
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        // Handle Axios errors
+        if (err.response && err.response.data.message) {
+          setError(err.response.data.message); // Display backend error message
+        } else {
+          setError("An unexpected error occurred. Please try again.");
+        }
+      } else {
+        setError("Invalid credentials or server error.");
+      }
+      console.error(err);
+    }
+  };
+
   return (
     <div className="flex items-center justify-center py-5 px-3 gap-10 lg:px-30">
       {/* Image Section (hidden on smaller screens) */}
@@ -20,40 +73,36 @@ const LogIn = () => {
           🕵️‍♂️ Log in Now!
         </h3>
 
-        <form>
+        {error && <p className="text-red-500 text-center">{error}</p>}
+
+        <form onSubmit={handleLogin}>
           {/* Email Input */}
           <div className="mb-6">
-            <label
-              htmlFor="email"
-              className="flex gap-2 items-center text-gray-700 font-bold mb-2"
-            >
+            <label className="flex gap-2 items-center text-gray-700 font-bold mb-2">
               <MdEmail /> Email
             </label>
             <input
               type="email"
-              name="email"
-              id="email"
-              className="w-full px-3 py-2 border border-gray-100 bg-gray-100 rounded-lg focus:outline-none focus:border-black"
+              className="w-full px-3 py-2 border bg-gray-100 rounded-lg focus:outline-none focus:border-black"
               placeholder="Enter Your Email"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           {/* Password Input */}
           <div className="mb-6">
-            <label
-              htmlFor="password"
-              className="text-gray-700 font-bold mb-2 flex gap-2 items-center"
-            >
+            <label className="text-gray-700 font-bold mb-2 flex gap-2 items-center">
               <RiLockPasswordFill /> Password
             </label>
             <input
               type="password"
-              name="password"
-              id="password"
-              className="w-full px-3 py-2 border border-gray-100 bg-gray-100 rounded-lg focus:outline-none focus:border-black"
+              className="w-full px-3 py-2 border bg-gray-100 rounded-lg focus:outline-none focus:border-black"
               placeholder="Enter Your Password"
               required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 

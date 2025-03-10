@@ -1,97 +1,79 @@
-import { useRef, useState } from "react";
+import axios from "axios";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { FaUpload, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { MdEmail } from "react-icons/md";
 import { RiLockPasswordFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom"; // For redirection
+import Swal from "sweetalert2";
 
 const SignUp = () => {
-  // Image Upload State
-  const [image, setImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Handle File Selection
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    }
-  };
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const [loading, setLoading] = useState<boolean>(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // Handle form submission (send data to your server or API)
-  };
+  const onSubmit = async (data: any) => {
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/signup",
+        data
+      );
 
-  const handleRegisterWithGoogle = () => {
-    // Implement Google authentication logic here
-    console.log("Registering with Google");
+      // Handle JWT token (if returned in response)
+      if (response.data.token) {
+        localStorage.setItem("token", response.data.token); // Store token in localStorage
+      }
+      console.log(response.data);
+      Swal.fire({
+        icon: "success",
+        title: "Sign Up Successful!",
+        text: "Your account has been created successfully.",
+      }).then(() => {
+        navigate("/login"); // Redirect to login page after successful signup
+      });
+    } catch (error) {
+      console.error("Error Sign Up", error);
+      Swal.fire({
+        icon: "error",
+        title: "Sign Up Failed!",
+        text: "Something went wrong. Please try again later.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="flex items-center justify-center py-5 px-3 gap-10 lg:px-30 min-h-screen">
-      {/* Image Section (hidden on smaller screens) */}
+      {/* Image Section */}
       <div className="hidden lg:block w-1/2">
         <img
-          src="/src/assets/img/signup.jpg"
-          alt="Login"
+          src="./src/assets/img/signup.jpg"
+          alt="Sign Up Image"
           className="object-cover rounded-3xl"
         />
       </div>
+
+      {/* Form Section */}
       <div className="bg-white p-5 shadow-lg rounded-lg w-full lg:w-1/2">
-        {/* Sign Up Form Section */}
         <h3 className="font-[Recoleta] text-3xl font-bold mb-5 text-center">
           🚀 Ready to Register?
         </h3>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* Profile Picture Upload */}
-          <div className="mb-6 p-6 rounded-lg text-left bg-gray-100">
-            {/* Display Image Preview If Available */}
-            {image ? (
-              <img
-                src={image}
-                alt="Uploaded Preview"
-                className="w-32 h-32 mb-2 rounded-lg"
-              />
-            ) : (
-              <p className="text-gray-700">No image uploaded</p>
-            )}
-
-            {/* Upload Button */}
-            <button
-              onClick={() => fileInputRef.current?.click()}
-              className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium cursor-pointer flex items-center gap-2 hover:bg-blue-700 transition"
-            >
-              <FaUpload />
-              Upload Image
-            </button>
-
-            {/* Hidden File Input */}
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              ref={fileInputRef}
-              onChange={handleFileUpload}
-            />
-          </div>
           {/* Name Input */}
           <div className="mb-6">
-            <label
-              htmlFor="name"
-              className="flex gap-2 items-center text-gray-700 font-bold mb-2"
-            >
+            <label className="flex gap-2 items-center text-gray-700 font-bold mb-2">
               <FaUser /> Name
             </label>
             <input
               type="text"
               {...register("name", { required: true })}
-              id="name"
               className="w-full px-3 py-2 border border-gray-100 bg-gray-100 rounded-lg focus:outline-none focus:border-indigo-500"
               placeholder="Enter Your Name"
             />
@@ -102,16 +84,12 @@ const SignUp = () => {
 
           {/* Email Input */}
           <div className="mb-6">
-            <label
-              htmlFor="email"
-              className="text-gray-700 font-bold mb-2 flex gap-2 items-center "
-            >
+            <label className="text-gray-700 font-bold mb-2 flex gap-2 items-center">
               <MdEmail /> Email
             </label>
             <input
               type="email"
               {...register("email", { required: true })}
-              id="email"
               className="w-full px-3 py-2 border border-gray-100 bg-gray-100 rounded-lg focus:outline-none focus:border-indigo-500"
               placeholder="Enter Your Email"
             />
@@ -122,10 +100,7 @@ const SignUp = () => {
 
           {/* Password Input */}
           <div className="mb-6">
-            <label
-              htmlFor="password"
-              className="text-gray-700 font-bold mb-2 flex gap-2 items-center "
-            >
+            <label className="text-gray-700 font-bold mb-2 flex gap-2 items-center">
               <RiLockPasswordFill /> Password
             </label>
             <input
@@ -136,27 +111,14 @@ const SignUp = () => {
                 maxLength: 20,
                 pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
               })}
-              id="password"
               className="w-full px-3 py-2 border border-gray-100 bg-gray-100 rounded-lg focus:outline-none focus:border-indigo-500"
               placeholder="Enter Your Password"
             />
-            {errors.password?.type === "required" && (
-              <p className="text-red-600">Password is required</p>
-            )}
-            {errors.password?.type === "minLength" && (
+            {errors.password && (
               <p className="text-red-600">
-                Password must be at least 6 characters
-              </p>
-            )}
-            {errors.password?.type === "maxLength" && (
-              <p className="text-red-600">
-                Password must be less than 20 characters
-              </p>
-            )}
-            {errors.password?.type === "pattern" && (
-              <p className="text-red-600">
-                Password must contain at least one uppercase, one lowercase, one
-                number, and one special character.
+                Password must be 6-20 characters, include at least one uppercase
+                letter, one lowercase letter, one number, and one special
+                character.
               </p>
             )}
           </div>
@@ -164,22 +126,24 @@ const SignUp = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-black text-white rounded-lg px-4 py-2 font-semibold hover:bg-blue-600 transition-colors w-full mb-4"
+            disabled={loading}
+            className={`bg-black text-white rounded-lg px-4 py-2 font-semibold hover:bg-blue-600 transition-colors w-full mb-4 ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
-            Sign Up
+            {loading ? "Signing Up..." : "Sign Up"}
           </button>
 
-          {/* Divider */}
-          <div className="flex items-center justify-center mb-4">
+          {/* Google Sign In */}
+          <div className="flex items-center justify-center my-4">
             <div className="border-t border-gray-300 w-16"></div>
-            <span className="text-gray-500 mx-2">Or Sign Up With</span>
+            <span className="text-gray-500 mx-2">Or Sign In With</span>
             <div className="border-t border-gray-300 w-16"></div>
           </div>
 
           {/* Google Sign Up Button */}
           <button
             type="button"
-            onClick={handleRegisterWithGoogle}
             className="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold hover:bg-black transition-colors w-full flex items-center justify-center"
           >
             <FcGoogle className="mr-2" size={20} />
