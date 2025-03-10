@@ -27,32 +27,24 @@ const LogIn = () => {
 
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-
-        // Show success alert
+        localStorage.setItem("user", JSON.stringify(response.data.user)); // Store user data
+        console.log(response.data);
         Swal.fire({
           title: "Login Successful!",
           text: "You are now logged in.",
           icon: "success",
           confirmButtonText: "Go to Homepage",
         }).then(() => {
-          navigate("/"); // Redirect to homepage after clicking "OK"
+          navigate("/");
         });
       } else {
-        setError(response.data.message);
+        setError(response.data.message || "Login failed, please try again.");
       }
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        // Handle Axios errors
-        if (err.response && err.response.data.message) {
-          setError(err.response.data.message); // Display backend error message
-        } else {
-          setError("An unexpected error occurred. Please try again.");
-        }
-      } else {
-        setError("Invalid credentials or server error.");
-      }
-      console.error(err);
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message || "Invalid credentials or server error."
+      );
+      console.error("Login error:", err);
     }
   };
 
@@ -61,7 +53,7 @@ const LogIn = () => {
       {/* Image Section (hidden on smaller screens) */}
       <div className="hidden lg:block w-1/2">
         <img
-          src="/src/assets/img/login.jpg"
+          src="./src/assets/img/login.jpg"
           alt="Login"
           className="object-cover rounded-3xl"
         />
@@ -109,7 +101,7 @@ const LogIn = () => {
           {/* Sign In Button */}
           <button
             type="submit"
-            className="bg-black text-white rounded-lg px-4 py-2 font-semibold hover:bg-blue-600 transition-colors w-full mb-4"
+            className="bg-black text-white rounded-lg px-4 py-2 font-semibold hover:bg-gray-800 transition-colors w-full mb-4"
           >
             Sign In
           </button>
@@ -123,7 +115,7 @@ const LogIn = () => {
 
           <button
             type="button"
-            className="bg-blue-600 text-white rounded-lg px-4 py-2 font-semibold hover:bg-red-600 transition-colors w-full flex items-center justify-center"
+            className="bg-red-500 text-white rounded-lg px-4 py-2 font-semibold hover:bg-red-600 transition-colors w-full flex items-center justify-center"
           >
             <FcGoogle className="mr-2" size={30} />
             Sign In with Google
