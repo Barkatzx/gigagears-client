@@ -83,7 +83,7 @@ const NavBar = () => {
               {isLoggedIn ? (
                 <>
                   <li>
-                    <Link to="/profile">Profile</Link>
+                    <Link to="/dashboard">Profile</Link>
                   </li>
                   <hr className="my-1 text-gray-200" />
                   <li>

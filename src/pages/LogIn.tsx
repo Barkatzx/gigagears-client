@@ -33,9 +33,9 @@ const LogIn = () => {
           title: "Login Successful!",
           text: "You are now logged in.",
           icon: "success",
-          confirmButtonText: "Go to Homepage",
+          confirmButtonText: "Go to Dashboard",
         }).then(() => {
-          navigate("/");
+          navigate("/dashboard");
         });
       } else {
         setError(response.data.message || "Login failed, please try again.");
