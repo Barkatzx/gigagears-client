@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaSearch, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { RiLoginBoxFill } from "react-icons/ri";
 import { SiGnuprivacyguard } from "react-icons/si";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -83,11 +83,9 @@ const NavBar = () => {
               {isLoggedIn ? (
                 <>
                   <li>
-                    <a href="/profile">Profile</a>
+                    <Link to="/profile">Profile</Link>
                   </li>
-                  <li>
-                    <a href="/settings">Settings</a>
-                  </li>
+                  <hr className="my-1 text-gray-200" />
                   <li>
                     <button onClick={handleLogout}>Log Out</button>
                   </li>
