@@ -3,6 +3,7 @@ import { FaSearch, FaShoppingCart, FaUserCircle } from "react-icons/fa";
 import { RiLoginBoxFill } from "react-icons/ri";
 import { SiGnuprivacyguard } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../assets/img/logo.png";
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,8 +29,8 @@ const NavBar = () => {
     <nav className="container mx-auto bg-white shadow-sm lg:px-40 py-5 px-5">
       <div className="flex items-center justify-between">
         {/* Left: Logo */}
-        <a href="/" className="text-2xl font-bold">
-          <img src="./src/assets/img/logo.png" className="w-36" />
+        <a href="/">
+          <img src={logo} className="w-36" alt="Logo" />
         </a>
 
         {/* Center: Navigation Links */}
