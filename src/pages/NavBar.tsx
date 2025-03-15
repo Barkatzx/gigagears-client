@@ -7,48 +7,62 @@ import logo from "../assets/img/logo.png";
 
 const NavBar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
   const navigate = useNavigate();
 
-  // Check if the user is logged in on component mount
+  // Load cart items from localStorage on mount
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
     if (token) {
       setIsLoggedIn(true);
     }
+    setCartItems(cart);
   }, []);
 
-  // Handle logout
+  // Update cart count when localStorage changes
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      setCartItems(cart);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove the token
-    localStorage.removeItem("user"); // Remove user data
-    setIsLoggedIn(false); // Update login state
-    navigate("/login"); // Redirect to login page
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    navigate("/login");
   };
 
   return (
     <nav className="container mx-auto bg-white shadow-sm lg:px-40 py-5 px-5">
       <div className="flex items-center justify-between">
         {/* Left: Logo */}
-        <a href="/">
+        <Link to="/">
           <img src={logo} className="w-36" alt="Logo" />
-        </a>
+        </Link>
 
         {/* Center: Navigation Links */}
         <ul className="hidden md:flex space-x-6 text-sm font-semibold">
           <li>
-            <a href="/" className="hover:text-blue-600">
+            <Link to="/" className="hover:text-blue-600">
               Home
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/about" className="hover:text-blue-600">
+            <Link to="/shop" className="hover:text-blue-600">
               Shop
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="/contact" className="hover:text-blue-600">
+            <Link to="/contact" className="hover:text-blue-600">
               Contact
-            </a>
+            </Link>
           </li>
         </ul>
 
@@ -64,13 +78,15 @@ const NavBar = () => {
             <FaSearch className="absolute left-4 top-4 text-gray-600" />
           </div>
 
-          {/* Cart Icon */}
-          <a href="/cart" className="relative">
+          {/* Dynamic Cart Icon */}
+          <Link to="/cart" className="relative">
             <FaShoppingCart className="text-2xl hover:text-blue-600" />
-            <span className="absolute -top-2 -right-2 bg-blue-600 text-xs text-white rounded-full px-1">
-              2
-            </span>
-          </a>
+            {cartItems.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-blue-600 text-xs text-white rounded-full px-2 py-1">
+                {cartItems.length}
+              </span>
+            )}
+          </Link>
 
           {/* User Avatar Dropdown */}
           <div className="dropdown dropdown-end">
@@ -94,15 +110,15 @@ const NavBar = () => {
               ) : (
                 <>
                   <li>
-                    <a href="/login" className="flex items-center gap-2">
+                    <Link to="/login" className="flex items-center gap-2">
                       <RiLoginBoxFill /> Login
-                    </a>
+                    </Link>
                   </li>
                   <hr className="my-1 text-gray-200" />
                   <li>
-                    <a href="/signup" className="flex items-center gap-2">
+                    <Link to="/signup" className="flex items-center gap-2">
                       <SiGnuprivacyguard /> Sign Up
-                    </a>
+                    </Link>
                   </li>
                 </>
               )}
