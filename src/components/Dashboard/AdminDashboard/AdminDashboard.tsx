@@ -1,12 +1,10 @@
 import { JSX, useState } from "react";
-import {
-  AiOutlineDashboard,
-  AiOutlineSetting,
-  AiOutlineUser,
-} from "react-icons/ai";
+import { AiOutlineDashboard, AiOutlineSetting } from "react-icons/ai";
 import { FiBarChart, FiUsers } from "react-icons/fi";
+import { IoBagAddOutline } from "react-icons/io5";
 import { RiFileList2Line } from "react-icons/ri";
 import MenuDeshboard from "../../MenuDashboard/MenuDeshboard";
+import AddProducts from "../../Products/AddProducts";
 
 const AdminDashboard = () => {
   const [selectedPage, setSelectedPage] = useState("Dashboard");
@@ -24,10 +22,14 @@ const AdminDashboard = () => {
         </h2>
       ),
     },
-    Profile: {
-      label: "Profile",
-      icon: <AiOutlineUser className="text-xl" />,
-      content: <h2 className="text-xl font-bold">Profile Page</h2>,
+    AddProduct: {
+      label: "Add Product",
+      icon: <IoBagAddOutline className="text-xl" />,
+      content: (
+        <h2 className="text-xl font-bold">
+          <AddProducts />
+        </h2>
+      ),
     },
     Analytics: {
       label: "Analytics",
@@ -78,6 +80,7 @@ const AdminDashboard = () => {
           <li className="font-bold text-center text-lg mb-4">
             Admin Dashboard
           </li>
+          <hr className="text-gray-400" />
           {Object.entries(pages).map(([key, page]) => (
             <li key={key}>
               <a
