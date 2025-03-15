@@ -1,15 +1,54 @@
 import { JSX, useState } from "react";
+import {
+  AiOutlineDashboard,
+  AiOutlineSetting,
+  AiOutlineUser,
+} from "react-icons/ai";
+import { FiBarChart, FiUsers } from "react-icons/fi";
+import { RiFileList2Line } from "react-icons/ri";
+import MenuDeshboard from "../../MenuDashboard/MenuDeshboard";
 
-const AdmimDashboard = () => {
+const AdminDashboard = () => {
   const [selectedPage, setSelectedPage] = useState("Dashboard");
 
-  const pages: Record<string, JSX.Element> = {
-    Dashboard: <h2 className="text-xl font-bold">Here is Reuse Component</h2>,
-    Profile: <h2 className="text-xl font-bold">Profile Page</h2>,
-    Analytics: <h2 className="text-xl font-bold">Analytics Page</h2>,
-    Settings: <h2 className="text-xl font-bold">Settings Page</h2>,
-    Reports: <h2 className="text-xl font-bold">Reports Page</h2>,
-    Users: <h2 className="text-xl font-bold">Users Page</h2>,
+  const pages: Record<
+    string,
+    { label: string; icon: JSX.Element; content: JSX.Element }
+  > = {
+    Dashboard: {
+      label: "Dashboard",
+      icon: <AiOutlineDashboard className="text-xl" />,
+      content: (
+        <h2 className="text-xl font-bold">
+          <MenuDeshboard />
+        </h2>
+      ),
+    },
+    Profile: {
+      label: "Profile",
+      icon: <AiOutlineUser className="text-xl" />,
+      content: <h2 className="text-xl font-bold">Profile Page</h2>,
+    },
+    Analytics: {
+      label: "Analytics",
+      icon: <FiBarChart className="text-xl" />,
+      content: <h2 className="text-xl font-bold">Analytics Page</h2>,
+    },
+    Settings: {
+      label: "Settings",
+      icon: <AiOutlineSetting className="text-xl" />,
+      content: <h2 className="text-xl font-bold">Settings Page</h2>,
+    },
+    Reports: {
+      label: "Reports",
+      icon: <RiFileList2Line className="text-xl" />,
+      content: <h2 className="text-xl font-bold">Reports Page</h2>,
+    },
+    Users: {
+      label: "Users",
+      icon: <FiUsers className="text-xl" />,
+      content: <h2 className="text-xl font-bold">Users Page</h2>,
+    },
   };
 
   return (
@@ -18,7 +57,6 @@ const AdmimDashboard = () => {
 
       {/* Main Content */}
       <div className="drawer-content flex flex-col p-6">
-        {/* Button to open sidebar on small screens */}
         <label
           htmlFor="my-drawer"
           className="btn btn-primary drawer-button lg:hidden mb-4"
@@ -28,26 +66,30 @@ const AdmimDashboard = () => {
 
         {/* Dynamic Page Content */}
         <div className="p-6 bg-white shadow-md rounded-lg">
-          {pages[selectedPage]}
+          {pages[selectedPage].content}
         </div>
       </div>
 
       {/* Sidebar */}
       <div className="drawer-side">
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
-        <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
-          <li className="font-bold text-lg mb-4">Dashboard Menu</li>
-          {Object.keys(pages).map((page) => (
-            <li key={page}>
+        <ul className="menu bg-gray-100 font-bold min-h-full w-70 p-4">
+          <img src="/src/assets/img/logo.png" className="w-50 mx-auto" />
+          <li className="font-bold text-center text-lg mb-4">
+            Admin Dashboard
+          </li>
+          {Object.entries(pages).map(([key, page]) => (
+            <li key={key}>
               <a
-                className={`p-3 block rounded ${
-                  selectedPage === page
-                    ? "bg-blue-500 text-white"
-                    : "hover:bg-blue-300"
+                className={`flex items-center gap-3 p-3 rounded ${
+                  selectedPage === key
+                    ? "bg-blue-600 text-white"
+                    : "hover:bg-gray-200"
                 }`}
-                onClick={() => setSelectedPage(page)}
+                onClick={() => setSelectedPage(key)}
               >
-                {page}
+                {page.icon}
+                {page.label}
               </a>
             </li>
           ))}
@@ -57,4 +99,4 @@ const AdmimDashboard = () => {
   );
 };
 
-export default AdmimDashboard;
+export default AdminDashboard;

@@ -3,15 +3,15 @@
 
 @font-face {
   font-family: "Poppins";
-  src: url("./src/assets/font/Poppins.ttf") format("truetype");
+  src: url("/src/assets/font/Poppins.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Recoleta";
-  src: url("./src/assets/font/Recoleta.ttf") format("truetype");
-  font-weight: 600; /* Instead of semi-bold */
+  src: url("/src/assets/font/Recoleta.ttf") format("truetype");
+  font-weight: 600;
   font-style: normal;
 }
 
