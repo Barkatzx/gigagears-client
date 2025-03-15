@@ -4,6 +4,7 @@ import Cart from "../components/Cart/Cart";
 import AdminDashboard from "../components/Dashboard/AdminDashboard/AdminDashboard";
 import CustomerDashboard from "../components/Dashboard/CustomerDashboard/CustomerDashboard";
 import Dashboard from "../components/Dashboard/Dashboard";
+import ProductDescription from "../components/Products/ProductDescription";
 import LogIn from "../pages/LogIn";
 import SignUp from "../pages/SignUp";
 import Home from "./Home";
@@ -40,6 +41,10 @@ const Router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart />,
+      },
+      {
+        path: "/product/:id",
+        element: <ProductDescription />,
       },
     ],
   },
