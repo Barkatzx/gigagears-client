@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaShoppingCart } from "react-icons/fa";
+import { FaArrowLeft, FaArrowRight, FaShoppingCart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useCart } from "../../context/CartContext";
@@ -17,8 +17,10 @@ const AddCart = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 8;
   const navigate = useNavigate();
-  const { cart, addToCart } = useCart();
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -55,6 +57,15 @@ const AddCart = () => {
   if (loading) return <p className="text-center py-8">Loading products...</p>;
   if (error) return <p className="text-center text-red-500 py-8">{error}</p>;
 
+  // Pagination Logic
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+  const totalPages = Math.ceil(products.length / productsPerPage);
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h2 className="font-[Recoleta] text-4xl font-bold text-center mb-8">
@@ -62,7 +73,7 @@ const AddCart = () => {
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {products.map((product) => (
+        {currentProducts.map((product) => (
           <div
             key={product._id}
             className="bg-gray-100 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 relative"
@@ -91,15 +102,28 @@ const AddCart = () => {
         ))}
       </div>
 
-      {/* <div className="mt-8 text-center">
-        <Link
-          to="/cart"
-          className="inline-flex items-center bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-6 space-x-2">
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-gray-300 rounded-md disabled:opacity-50 flex items-center"
         >
-          <FaShoppingCart className="mr-2" />
-          View Cart ({cart.reduce((sum, item) => sum + item.quantity, 0)})
-        </Link>
-      </div> */}
+          <FaArrowLeft className="mr-2" /> Previous
+        </button>
+        <span className="px-4 py-2 bg-gray-200 rounded-md">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+          className="px-4 py-2 bg-gray-300 rounded-md disabled:opacity-50 flex items-center"
+        >
+          Next <FaArrowRight className="ml-2" />
+        </button>
+      </div>
     </div>
   );
 };
