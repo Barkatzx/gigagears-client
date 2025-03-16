@@ -25,7 +25,7 @@ const ProtectedRoute = ({ allowedRoles, children }: ProtectedRouteProps) => {
   }
 
   // If the user's role is not allowed, redirect to unauthorized page
-  return <Navigate to="/unauthorized" />;
+  return <Navigate to="/signup" />;
 };
 
 export default ProtectedRoute;

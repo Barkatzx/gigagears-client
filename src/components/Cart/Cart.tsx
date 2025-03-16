@@ -1,6 +1,9 @@
-import { FaArrowLeft, FaTrash } from "react-icons/fa";
+import { BsFillTrash2Fill } from "react-icons/bs";
+import { FaArrowLeft, FaPlusCircle } from "react-icons/fa";
+import { FaCircleMinus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import Divider from "../../context/Divider";
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
@@ -20,9 +23,7 @@ const Cart = () => {
           <FaArrowLeft className="mr-2" />
           Continue Shopping
         </Link>
-        <h1 className="font-[Recoleta] text-4xl font-bold">
-          Your Shopping Cart
-        </h1>
+        <Divider title="Your Shopping Cart"></Divider>
         <div className="w-24"></div>
       </div>
 
@@ -43,19 +44,21 @@ const Cart = () => {
               <img
                 src={item.photo}
                 alt={item.name}
-                className="w-32 h-32 object-cover rounded-lg mb-4 md:mb-0"
+                className="w-32 h-32 object-cover rounded-lg bg-white mb-4 md:mb-0"
               />
               <div className="flex-1 md:ml-6 text-center md:text-left">
-                <h3 className="text-xl font-semibold ">{item.name}</h3>
+                <h3 className="font-[Recoleta] text-xl font-bold ">
+                  {item.name}
+                </h3>
                 <p className="text-gray-600">৳{item.price}</p>
               </div>
               <div className="flex items-center gap-4 mt-4 md:mt-0">
                 <div className="flex items-center">
                   <button
                     onClick={() => updateQuantity(item._id, item.quantity - 1)}
-                    className="px-3 py-1 border rounded-l bg-gray-100"
+                    className="px-3 py-2 bg-gray-600 text-white"
                   >
-                    -
+                    <FaCircleMinus />
                   </button>
                   <input
                     type="number"
@@ -63,14 +66,14 @@ const Cart = () => {
                     onChange={(e) =>
                       updateQuantity(item._id, parseInt(e.target.value))
                     }
-                    className="w-16 text-center border-y"
+                    className="w-20 px-2 py-1 text-center bg-white"
                     min="1"
                   />
                   <button
                     onClick={() => updateQuantity(item._id, item.quantity + 1)}
-                    className="px-3 py-1 border rounded-r bg-gray-100"
+                    className="px-3 py-2 bg-gray-600 text-white"
                   >
-                    +
+                    <FaPlusCircle />
                   </button>
                 </div>
                 <p className="text-xl font-bold">
@@ -80,13 +83,13 @@ const Cart = () => {
                   onClick={() => removeFromCart(item._id)}
                   className="text-red-500 hover:text-red-700"
                 >
-                  <FaTrash size={20} />
+                  <BsFillTrash2Fill size={30} />
                 </button>
               </div>
             </div>
           ))}
 
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-gray-100 p-6 rounded-lg shadow-md">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold font-[Recoleta]">
                 Order Summary
@@ -104,8 +107,10 @@ const Cart = () => {
                 <span className="font-bold">৳{totalPrice}</span>
               </div>
               <div className="flex justify-between">
-                <span>Shipping</span>
-                <span className="font-bold">৳{totalPrice > 5000 ? 0 : 50}</span>
+                <span>Shipping Fee</span>
+                <span className="font-bold">
+                  ৳{totalPrice > 5000 ? 0 : 150}
+                </span>
               </div>
               <div className="flex justify-between text-xl font-bold">
                 <span className="font-[Recoleta]">Total</span>
@@ -115,7 +120,7 @@ const Cart = () => {
               </div>
             </div>
             <Link to="/checkout">
-              <button className="w-full bg-green-600 text-white py-3 rounded-lg mt-6 hover:bg-green-700 transition-colors">
+              <button className="w-full bg-blue-600 text-white py-3 rounded-lg mt-6 hover:bg-blue-700 transition-colors">
                 Proceed to Checkout
               </button>
             </Link>

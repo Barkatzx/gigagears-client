@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { IoBagAdd } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -15,11 +14,12 @@ interface Product {
   photo: string;
 }
 
-const AddCart = () => {
+const ProductShop = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [sortOrder, setSortOrder] = useState<string>(""); // Sorting state
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const productsPerPage = 8;
   const navigate = useNavigate();
   const { addToCart } = useCart();
@@ -56,29 +56,50 @@ const AddCart = () => {
     navigate(`/product/${productId}`);
   };
 
-  if (loading) return <p className="text-center py-8">Loading products...</p>;
-  if (error) return <p className="text-center text-red-500 py-8">{error}</p>;
+  // Sorting logic
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortOrder === "low-to-high") return a.price - b.price;
+    if (sortOrder === "high-to-low") return b.price - a.price;
+    return 0;
+  });
 
-  // Pagination Logic
+  // Pagination logic
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = products.slice(
+  const currentProducts = sortedProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
-  const totalPages = Math.ceil(products.length / productsPerPage);
+  const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
+
+  if (loading) return <p className="text-center py-8">Loading products...</p>;
+  if (error) return <p className="text-center text-red-500 py-8">{error}</p>;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h2 className="font-[Recoleta] text-4xl font-bold text-center mb-8">
-        <Divider title="Featured Products"></Divider>
+        <Divider title="All Products" />
       </h2>
 
+      {/* Sorting Dropdown */}
+      <div className="mb-6">
+        <select
+          className="px-4 py-2 border rounded-md"
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+        >
+          <option value="">Sort By</option>
+          <option value="low-to-high">Price: Low to High</option>
+          <option value="high-to-low">Price: High to Low</option>
+        </select>
+      </div>
+
+      {/* Product Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {currentProducts.map((product) => (
           <div
             key={product._id}
-            className="bg-gray-100 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 relative"
+            className="bg-gray-100 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 relative"
           >
             <div className="p-5">
               <img
@@ -91,7 +112,9 @@ const AddCart = () => {
                 className="cursor-pointer mt-4"
               >
                 <h3 className="text-lg font-bold">{product.name}</h3>
-                <p className="text-blue-600 font-bold mt-2">৳{product.price}</p>
+                <p className="text-blue-600 font-bold mt-2">
+                  {product.price} ৳
+                </p>
               </div>
               <button
                 onClick={(e) => handleAddToCart(product, e)}
@@ -104,30 +127,24 @@ const AddCart = () => {
         ))}
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-center mt-6 space-x-2">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-gray-300 rounded-md disabled:opacity-50 flex items-center"
-        >
-          <FaArrowLeft className="mr-2" /> Previous
-        </button>
-        <span className="px-4 py-2 bg-gray-200 rounded-md">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-gray-300 rounded-md disabled:opacity-50 flex items-center"
-        >
-          Next <FaArrowRight className="ml-2" />
-        </button>
+      {/* Pagination */}
+      <div className="flex justify-center mt-8 space-x-2">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            className={`px-4 py-2 border rounded-md ${
+              currentPage === i + 1
+                ? "bg-blue-500 text-white"
+                : "bg-white text-black"
+            }`}
+            onClick={() => setCurrentPage(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
     </div>
   );
 };
 
-export default AddCart;
+export default ProductShop;

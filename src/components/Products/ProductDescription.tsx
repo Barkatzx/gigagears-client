@@ -63,11 +63,11 @@ const ProductDescription = () => {
       {product && (
         <div className="flex flex-col md:flex-row gap-8">
           {/* Product Image */}
-          <div className="md:w-1/2">
+          <div className="md:w-1/2 rounded-xl">
             <img
               src={product.photo}
               alt={product.name}
-              className="w-full h-96 object-contain rounded-lg bg-gray-100 p-8 shadow-lg"
+              className="w-full h-96 object-contain rounded-xl bg-gray-100 p-10"
             />
           </div>
 

@@ -78,7 +78,7 @@ const Checkout = () => {
     return (
       <div className="max-w-6xl mx-auto px-4 py-8 text-center">
         <h2 className="text-2xl mb-4">Your cart is empty</h2>
-        <Link to="/products" className="text-blue-600 hover:underline">
+        <Link to="/" className="text-blue-600 hover:underline">
           Continue Shopping
         </Link>
       </div>

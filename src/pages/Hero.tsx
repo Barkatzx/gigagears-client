@@ -1,4 +1,5 @@
 import { FaShoppingCart } from "react-icons/fa";
+import { Link } from "react-router";
 const Hero = () => {
   return (
     <section className="bg-gray-100 lg:px-40 py-5 px-5">
@@ -12,10 +13,12 @@ const Hero = () => {
             Explore our high-quality computer accessories, from mechanical
             keyboards to top-tier gaming gear. Get the best deals today!
           </p>
-          <button className="mt-6 flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-700 cursor-pointer transition-all shadow-md hover:shadow-lg">
-            <FaShoppingCart className="text-xl" />
-            Shop Now 🚀
-          </button>
+          <Link to="/shop">
+            <button className="mt-6 flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md text-lg hover:bg-blue-700 cursor-pointer transition-all shadow-md hover:shadow-lg">
+              <FaShoppingCart className="text-xl" />
+              Shop Now 🚀
+            </button>
+          </Link>
         </div>
 
         {/* Right Side - Image */}

@@ -6,6 +6,8 @@ import AdminDashboard from "../components/Dashboard/AdminDashboard/AdminDashboar
 import CustomerDashboard from "../components/Dashboard/CustomerDashboard/CustomerDashboard";
 import Dashboard from "../components/Dashboard/Dashboard";
 import ProductDescription from "../components/Products/ProductDescription";
+import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
+import ProductShop from "../components/Shop/ProductShop";
 import LogIn from "../pages/LogIn";
 import SignUp from "../pages/SignUp";
 import Home from "./Home";
@@ -33,7 +35,11 @@ const Router = createBrowserRouter([
       },
       {
         path: "/dashboard/admin",
-        element: <AdminDashboard />,
+        element: (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/dashboard/customer",
@@ -41,7 +47,11 @@ const Router = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <Cart />,
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "customer"]}>
+            <Cart />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/product/:id",
@@ -50,6 +60,10 @@ const Router = createBrowserRouter([
       {
         path: "/checkout",
         element: <Checkout />,
+      },
+      {
+        path: "/shop",
+        element: <ProductShop />,
       },
     ],
   },
