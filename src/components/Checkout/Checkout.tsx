@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useCart } from "../../context/CartContext";
+import Divider from "../../context/Divider";
 
 interface ShippingAddress {
   name: string;
@@ -10,6 +11,7 @@ interface ShippingAddress {
   city: string;
   postalCode: string;
   country: string;
+  phoneNumber: string; // Added phone number field
 }
 
 const Checkout = () => {
@@ -87,12 +89,14 @@ const Checkout = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Checkout</h1>
+      <Divider title="Checkout"></Divider>
 
       <div className="grid md:grid-cols-2 gap-8">
         {/* Shipping Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <h2 className="text-xl font-semibold mb-4">Shipping Information</h2>
+          <h2 className="font-[Recoleta] text-xl font-semibold mb-4">
+            Shipping Information
+          </h2>
 
           <div>
             <label className="block mb-2">Full Name</label>
@@ -176,10 +180,14 @@ const Checkout = () => {
 
           <div>
             <label className="block mb-2">Country</label>
-            <input
+            <select
               {...register("country", { required: "Country is required" })}
               className="w-full p-2 border rounded"
-            />
+              defaultValue="Bangladesh"
+            >
+              <option value="Bangladesh">Bangladesh</option>
+              {/* Add more countries here, all disabled */}
+            </select>
             {errors.country && (
               <span className="text-red-500 text-sm">
                 {errors.country.message}
@@ -187,17 +195,39 @@ const Checkout = () => {
             )}
           </div>
 
+          <div>
+            <label className="block mb-2">Phone Number</label>
+            <input
+              type="tel"
+              {...register("phoneNumber", {
+                required: "Phone number is required",
+                pattern: {
+                  value: /^[0-9]{11}$/,
+                  message: "Please enter a valid phone number",
+                },
+              })}
+              className="w-full p-2 border rounded"
+            />
+            {errors.phoneNumber && (
+              <span className="text-red-500 text-sm">
+                {errors.phoneNumber.message}
+              </span>
+            )}
+          </div>
+
           <button
             type="submit"
-            className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700"
           >
             Place Order
           </button>
         </form>
 
         {/* Order Summary */}
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+        <div className="bg-gray-100 p-6 rounded-lg shadow-lg">
+          <h2 className="font-[Recoleta] text-xl font-semibold mb-4">
+            Order Summary
+          </h2>
 
           <div className="space-y-4">
             {cart.map((item) => (
@@ -221,7 +251,7 @@ const Checkout = () => {
                 <span>Shipping</span>
                 <span>৳{shippingCost.toLocaleString()}</span>
               </div>
-              <div className="flex justify-between font-bold text-lg">
+              <div className="font-[Recoleta] flex justify-between font-bold text-lg">
                 <span>Total</span>
                 <span>৳{total.toLocaleString()}</span>
               </div>
