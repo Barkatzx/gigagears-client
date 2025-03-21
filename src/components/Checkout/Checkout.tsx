@@ -60,7 +60,7 @@ const Checkout = () => {
           },
           body: JSON.stringify({
             currency: "usd",
-            amount: total * 100, // Convert total to cents
+            amount: total * 100,
           }),
         }
       );
