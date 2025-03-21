@@ -87,14 +87,18 @@ const AddCart = () => {
                 className="w-full h-48 object-cover rounded-xl"
               />
               <div
-                onClick={() => handleProductClick(product._id)}
+                onClick={() => {
+                  handleProductClick(product._id);
+                }}
                 className="cursor-pointer mt-4"
               >
                 <h3 className="text-lg font-bold">{product.name}</h3>
                 <p className="text-blue-600 font-bold mt-2">৳{product.price}</p>
               </div>
               <button
-                onClick={(e) => handleAddToCart(product, e)}
+                onClick={(e) => {
+                  handleAddToCart(product, e);
+                }}
                 className="absolute top-4 right-4 bg-blue-500 p-2 rounded-full text-white hover:bg-blue-800 transition-colors cursor-pointer"
               >
                 <IoBagAdd size={20} />
@@ -107,7 +111,9 @@ const AddCart = () => {
       {/* Pagination Controls */}
       <div className="flex justify-center mt-6 space-x-2">
         <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          onClick={() => {
+            setCurrentPage((prev) => Math.max(prev - 1, 1));
+          }}
           disabled={currentPage === 1}
           className="px-4 py-2 bg-gray-300 rounded-md disabled:opacity-50 flex items-center"
         >
@@ -117,9 +123,9 @@ const AddCart = () => {
           Page {currentPage} of {totalPages}
         </span>
         <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
+          onClick={() => {
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+          }}
           disabled={currentPage === totalPages}
           className="px-4 py-2 bg-gray-300 rounded-md disabled:opacity-50 flex items-center"
         >

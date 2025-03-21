@@ -86,7 +86,7 @@ const ProductShop = () => {
         <select
           className="px-4 py-2 border rounded-md"
           value={sortOrder}
-          onChange={(e) => setSortOrder(e.target.value)}
+          onChange={(e) => { setSortOrder(e.target.value); }}
         >
           <option value="">Sort By</option>
           <option value="low-to-high">Price: Low to High</option>
@@ -108,7 +108,7 @@ const ProductShop = () => {
                 className="w-full h-48 object-cover rounded-xl"
               />
               <div
-                onClick={() => handleProductClick(product._id)}
+                onClick={() => { handleProductClick(product._id); }}
                 className="cursor-pointer mt-4"
               >
                 <h3 className="text-lg font-bold">{product.name}</h3>
@@ -117,7 +117,7 @@ const ProductShop = () => {
                 </p>
               </div>
               <button
-                onClick={(e) => handleAddToCart(product, e)}
+                onClick={(e) => { handleAddToCart(product, e); }}
                 className="absolute top-4 right-4 bg-blue-500 p-2 rounded-full text-white hover:bg-blue-800 transition-colors cursor-pointer"
               >
                 <IoBagAdd size={20} />
@@ -137,7 +137,7 @@ const ProductShop = () => {
                 ? "bg-blue-500 text-white"
                 : "bg-white text-black"
             }`}
-            onClick={() => setCurrentPage(i + 1)}
+            onClick={() => { setCurrentPage(i + 1); }}
           >
             {i + 1}
           </button>

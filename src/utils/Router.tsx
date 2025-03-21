@@ -1,7 +1,8 @@
+import { Elements } from "@stripe/react-stripe-js";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import Cart from "../components/Cart/Cart";
-import Checkout from "../components/Checkout/Checkout";
+import Checkout, { stripePromise } from "../components/Checkout/Checkout";
 import AdminDashboard from "../components/Dashboard/AdminDashboard/AdminDashboard";
 import CustomerDashboard from "../components/Dashboard/CustomerDashboard/CustomerDashboard";
 import Dashboard from "../components/Dashboard/Dashboard";
@@ -59,7 +60,11 @@ const Router = createBrowserRouter([
       },
       {
         path: "/checkout",
-        element: <Checkout />,
+        element: (
+          <Elements stripe={stripePromise}>
+            <Checkout />
+          </Elements>
+        ),
       },
       {
         path: "/shop",

@@ -50,12 +50,14 @@ const Cart = () => {
                 <h3 className="font-[Recoleta] text-xl font-bold ">
                   {item.name}
                 </h3>
-                <p className="text-gray-600">৳{item.price}</p>
+                <p className="text-gray-600">${item.price}</p>
               </div>
               <div className="flex items-center gap-4 mt-4 md:mt-0">
                 <div className="flex items-center">
                   <button
-                    onClick={() => updateQuantity(item._id, item.quantity - 1)}
+                    onClick={() => {
+                      updateQuantity(item._id, item.quantity - 1);
+                    }}
                     className="px-3 py-2 bg-gray-600 text-white"
                   >
                     <FaCircleMinus />
@@ -63,24 +65,28 @@ const Cart = () => {
                   <input
                     type="number"
                     value={item.quantity}
-                    onChange={(e) =>
-                      updateQuantity(item._id, parseInt(e.target.value))
-                    }
+                    onChange={(e) => {
+                      updateQuantity(item._id, parseInt(e.target.value));
+                    }}
                     className="w-20 px-2 py-1 text-center bg-white"
                     min="1"
                   />
                   <button
-                    onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                    onClick={() => {
+                      updateQuantity(item._id, item.quantity + 1);
+                    }}
                     className="px-3 py-2 bg-gray-600 text-white"
                   >
                     <FaPlusCircle />
                   </button>
                 </div>
                 <p className="text-xl font-bold">
-                  ৳{item.price * item.quantity}
+                  ${item.price * item.quantity}
                 </p>
                 <button
-                  onClick={() => removeFromCart(item._id)}
+                  onClick={() => {
+                    removeFromCart(item._id);
+                  }}
                   className="text-red-500 hover:text-red-700"
                 >
                   <BsFillTrash2Fill size={30} />
@@ -108,14 +114,12 @@ const Cart = () => {
               </div>
               <div className="flex justify-between">
                 <span>Shipping Fee</span>
-                <span className="font-bold">
-                  ৳{totalPrice > 5000 ? 0 : 150}
-                </span>
+                <span className="font-bold">৳{totalPrice > 100 ? 0 : 5}</span>
               </div>
               <div className="flex justify-between text-xl font-bold">
                 <span className="font-[Recoleta]">Total</span>
                 <span className="font-[Recoleta]">
-                  ৳{totalPrice + (totalPrice > 5000 ? 0 : 150)}
+                  ${totalPrice + (totalPrice > 100 ? 0 : 5)}
                 </span>
               </div>
             </div>

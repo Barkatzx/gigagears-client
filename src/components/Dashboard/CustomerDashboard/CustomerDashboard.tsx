@@ -79,7 +79,7 @@ const CustomerDashboard = () => {
                     ? "bg-blue-600 text-white"
                     : "hover:bg-gray-200"
                 }`}
-                onClick={() => setSelectedPage(key)}
+                onClick={() => { setSelectedPage(key); }}
               >
                 {page.icon}
                 {page.label}

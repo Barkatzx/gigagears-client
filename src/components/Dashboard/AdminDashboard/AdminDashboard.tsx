@@ -75,8 +75,8 @@ const AdminDashboard = () => {
       {/* Sidebar */}
       <div className="drawer-side">
         <label htmlFor="my-drawer" className="drawer-overlay"></label>
-        <ul className="menu bg-gray-100 font-bold min-h-full w-70 p-4">
-          <img src="/src/assets/img/logo.png" className="w-50 mx-auto" />
+        <ul className="menu bg-gray-50 font-bold min-h-full w-60 p-4 shadow-2xl">
+          <img src="/src/assets/img/logo.png" className="w-40 mx-auto" />
           <li className="font-bold text-center text-lg mb-4">
             Admin Dashboard
           </li>
@@ -89,7 +89,9 @@ const AdminDashboard = () => {
                     ? "bg-blue-600 text-white"
                     : "hover:bg-gray-200"
                 }`}
-                onClick={() => setSelectedPage(key)}
+                onClick={() => {
+                  setSelectedPage(key);
+                }}
               >
                 {page.icon}
                 {page.label}

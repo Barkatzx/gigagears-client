@@ -76,7 +76,7 @@ const LogIn = () => {
               placeholder="Enter Your Email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); }}
             />
           </div>
 
@@ -91,7 +91,7 @@ const LogIn = () => {
               placeholder="Enter Your Password"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => { setPassword(e.target.value); }}
             />
           </div>
 
