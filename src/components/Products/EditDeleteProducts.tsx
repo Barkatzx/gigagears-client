@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa";
-import Swal from "sweetalert2"; // Import SweetAlert
+import { BsFillTrash2Fill } from "react-icons/bs";
+import { MdEditSquare } from "react-icons/md";
+import Swal from "sweetalert2";
+import Divider from "../../context/Divider";
 
 interface Product {
   id: string;
@@ -47,8 +49,8 @@ const EditDeleteProducts: React.FC = () => {
             description: product.description,
             photo: product.photo,
             categories: Array.isArray(product.categories)
-              ? product.categories // Use directly if it's already an array
-              : JSON.parse(product.categories || "[]"), // Parse stringified array or default to empty array
+              ? product.categories
+              : JSON.parse(product.categories || "[]"),
           })
         );
 
@@ -116,7 +118,7 @@ const EditDeleteProducts: React.FC = () => {
         )
       );
 
-      setEditingProduct(null); // Reset editingProduct after saving
+      setEditingProduct(null);
       setError(null);
 
       // Show SweetAlert success message
@@ -140,8 +142,7 @@ const EditDeleteProducts: React.FC = () => {
   // Handle delete button click (delete product via API)
   const handleDeleteClick = async (productId: string) => {
     try {
-      // Retrieve the authentication token (e.g., from localStorage)
-      const token = localStorage.getItem("token"); // Replace with your token storage logic
+      const token = localStorage.getItem("token");
 
       if (!token) {
         throw new Error("No authentication token found");
@@ -152,7 +153,7 @@ const EditDeleteProducts: React.FC = () => {
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the request headers
+            Authorization: `Bearer ${token}`, //
           },
         }
       );
@@ -195,8 +196,9 @@ const EditDeleteProducts: React.FC = () => {
 
   return (
     <div className="p-4">
-      <h1 className="font-[Recoleta] text-2xl font-bold mb-4">
-        Product Management
+      <Divider title="Products Management" />
+      <h1 className="font-[Recoleta] text-xl font-bold mb-4">
+        Total Products: {products.length}
       </h1>
       <div className="overflow-x-auto">
         <table className="table w-full">
@@ -232,13 +234,13 @@ const EditDeleteProducts: React.FC = () => {
                       className="btn btn-sm btn-ghost"
                       onClick={() => handleEditClick(product)}
                     >
-                      <FaEdit className="h-5 w-5" />
+                      <MdEditSquare className="h-5 w-5 text-blue-600" />
                     </button>
                     <button
                       className="btn btn-sm btn-ghost"
                       onClick={() => handleDeleteClick(product.id)}
                     >
-                      <FaTrash className="h-5 w-5" />
+                      <BsFillTrash2Fill className="h-5 w-5 text-red-600" />
                     </button>
                   </div>
                 </td>
@@ -250,45 +252,47 @@ const EditDeleteProducts: React.FC = () => {
 
       {/* Edit Modal */}
       {editingProduct && (
-        <div className="modal modal-open">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">Edit Product</h3>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Name</span>
-              </label>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-gray-100 p-6 rounded-2xl shadow-lg w-96">
+            <Divider title="Edit Product" />
+
+            {/* Name Field */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">Name</label>
               <input
                 type="text"
                 value={editedName}
                 onChange={(e) => setEditedName(e.target.value)}
-                className="input input-bordered"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               />
             </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Price</span>
-              </label>
+
+            {/* Price Field */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">Price</label>
               <input
                 type="number"
                 value={editedPrice}
                 onChange={(e) => setEditedPrice(parseFloat(e.target.value))}
-                className="input input-bordered"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               />
             </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Description</span>
+
+            {/* Description Field */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">
+                Description
               </label>
               <textarea
                 value={editedDescription}
                 onChange={(e) => setEditedDescription(e.target.value)}
-                className="textarea textarea-bordered"
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400"
               />
             </div>
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text">Photo</span>
-              </label>
+
+            {/* Photo Upload */}
+            <div className="mb-4">
+              <label className="block text-gray-600 font-medium">Photo</label>
               <input
                 type="file"
                 onChange={(e) => {
@@ -296,14 +300,22 @@ const EditDeleteProducts: React.FC = () => {
                     setEditedPhoto(e.target.files[0]);
                   }
                 }}
-                className="file-input file-input-bordered"
+                className="w-full p-2 border border-gray-300 rounded-lg cursor-pointer file:bg-blue-500 file:text-white file:border-none file:px-3 file:py-2 file:rounded-lg hover:file:bg-blue-600"
               />
             </div>
-            <div className="modal-action">
-              <button className="btn" onClick={handleSaveChanges}>
+
+            {/* Action Buttons */}
+            <div className="flex justify-between mt-6">
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+                onClick={handleSaveChanges}
+              >
                 Save Changes
               </button>
-              <button className="btn" onClick={() => setEditingProduct(null)}>
+              <button
+                className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 transition"
+                onClick={() => setEditingProduct(null)}
+              >
                 Cancel
               </button>
             </div>
