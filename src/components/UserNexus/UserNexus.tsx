@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import { FaTrash, FaUserMinus, FaUserPlus } from "react-icons/fa"; // Icons for actions
+import {
+  FaChevronLeft,
+  FaChevronRight,
+  FaTrash,
+  FaUserMinus,
+  FaUserPlus,
+} from "react-icons/fa"; // Icons for actions
 import Swal from "sweetalert2"; // For confirmation dialogs
+import Divider from "../../context/Divider";
 
 interface User {
   _id: string;
@@ -14,6 +21,8 @@ const UserNexus = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1); // Pagination state
+  const usersPerPage = 10; // Number of users per page
 
   // Fetch users from the API
   useEffect(() => {
@@ -162,6 +171,24 @@ const UserNexus = () => {
     }
   };
 
+  // Pagination logic
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
+
+  // Change page
+  const nextPage = () => {
+    if (currentPage < Math.ceil(users.length / usersPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -172,7 +199,10 @@ const UserNexus = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">User Management</h1>
+      <Divider title="User Management" />
+      <h3 className="font-[Recoleta] text-xl font-bold mb-4">
+        Total User: {users.length}
+      </h3>
       <div className="overflow-x-auto">
         <table className="table w-full">
           <thead>
@@ -182,7 +212,7 @@ const UserNexus = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {currentUsers.map((user) => (
               <tr key={user._id}>
                 <td>
                   <div className="flex items-center space-x-4">
@@ -227,8 +257,15 @@ const UserNexus = () => {
                     <button
                       className="btn btn-sm btn-ghost"
                       onClick={() => handleDeleteUser(user._id)}
+                      disabled={user.role === "admin"} // Disable if user is admin
                     >
-                      <FaTrash className="h-5 w-5 text-red-600" />
+                      <FaTrash
+                        className={`h-5 w-5 ${
+                          user.role === "admin"
+                            ? "text-gray-400"
+                            : "text-red-600"
+                        }`}
+                      />
                     </button>
                   </div>
                 </td>
@@ -236,6 +273,27 @@ const UserNexus = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center items-center mt-4">
+        <button
+          onClick={prevPage}
+          disabled={currentPage === 1}
+          className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FaChevronLeft className="h-5 w-5" />
+        </button>
+        <span className="mx-4 font-medium">
+          Page {currentPage} of {Math.ceil(users.length / usersPerPage)}
+        </span>
+        <button
+          onClick={nextPage}
+          disabled={currentPage === Math.ceil(users.length / usersPerPage)}
+          className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FaChevronRight className="h-5 w-5" />
+        </button>
       </div>
     </div>
   );

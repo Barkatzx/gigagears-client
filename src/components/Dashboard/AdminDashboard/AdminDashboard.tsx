@@ -4,6 +4,7 @@ import { FiUsers } from "react-icons/fi";
 import { IoBagAddOutline } from "react-icons/io5";
 import { MdManageAccounts } from "react-icons/md";
 import { RiFileList2Line } from "react-icons/ri";
+import ManageOrders from "../../ManageOrders/ManageOrders";
 import MenuDeshboard from "../../MenuDashboard/MenuDeshboard";
 import AddProducts from "../../Products/AddProducts";
 import ProductEditDelete from "../../Products/EditDeleteProducts";
@@ -37,9 +38,9 @@ const AdminDashboard = () => {
       content: <UserNexus />,
     },
     Reports: {
-      label: "Reports",
+      label: "Manage Orders",
       icon: <RiFileList2Line className="text-xl" />,
-      content: <h2 className="text-xl font-bold">Reports Page</h2>,
+      content: <ManageOrders />,
     },
     Users: {
       label: "Users",

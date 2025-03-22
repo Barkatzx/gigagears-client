@@ -65,7 +65,7 @@ const MenuDeshboard = () => {
         },
       })
       .then((response) => {
-        console.log("Orders API Response:", response.data); // Debugging log
+        // console.log("Orders API Response:", response.data);
         if (response.data && Array.isArray(response.data.data)) {
           setOrderData(response.data.data.length); // Set total orders
 
