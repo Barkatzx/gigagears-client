@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaTrash, FaUserPlus } from "react-icons/fa"; // Icons for actions
+import { FaTrash, FaUserMinus, FaUserPlus } from "react-icons/fa"; // Icons for actions
 import Swal from "sweetalert2"; // For confirmation dialogs
 
 interface User {
@@ -65,6 +65,46 @@ const UserNexus = () => {
         icon: "success",
         title: "Role Updated!",
         text: "The user is now an admin.",
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: (err as Error).message,
+      });
+    }
+  };
+
+  // Handle removing admin role
+  const handleRemoveAdmin = async (userId: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/v1/users/${userId}/role`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ role: "customer" }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to update user role");
+      }
+
+      // Update the user's role in the local state
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user._id === userId ? { ...user, role: "customer" } : user
+        )
+      );
+
+      // Show success message
+      Swal.fire({
+        icon: "success",
+        title: "Role Updated!",
+        text: "The user is no longer an admin.",
       });
     } catch (err) {
       Swal.fire({
@@ -149,7 +189,10 @@ const UserNexus = () => {
                     <div className="avatar">
                       <div className="w-12 h-12 rounded-full">
                         <img
-                          src={user.photo || "https://via.placeholder.com/150"}
+                          src={
+                            user.photo ||
+                            "https://www.gravatar.com/avatar/default?d=mp"
+                          }
                           alt={user.name}
                           className="rounded-full"
                         />
@@ -164,13 +207,21 @@ const UserNexus = () => {
                 <td>
                   <div className="flex space-x-2">
                     {/* Make Admin Button */}
-                    <button
-                      className="btn btn-sm btn-ghost"
-                      onClick={() => handleMakeAdmin(user._id)}
-                      disabled={user.role === "admin"}
-                    >
-                      <FaUserPlus className="h-5 w-5 text-blue-600" />
-                    </button>
+                    {user.role === "customer" ? (
+                      <button
+                        className="btn btn-sm btn-ghost"
+                        onClick={() => handleMakeAdmin(user._id)}
+                      >
+                        <FaUserPlus className="h-5 w-5 text-blue-600" />
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-sm btn-ghost"
+                        onClick={() => handleRemoveAdmin(user._id)}
+                      >
+                        <FaUserMinus className="h-5 w-5 text-yellow-600" />
+                      </button>
+                    )}
 
                     {/* Delete User Button */}
                     <button
