@@ -94,6 +94,7 @@ const AddProduct = () => {
           <label className="block font-semibold">Price</label>
           <input
             type="number"
+            step={0.01}
             {...register("price", { required: true })}
             className="mt-1 block w-full p-2 bg-white rounded-md "
           />

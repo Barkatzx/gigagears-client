@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BsFillTrash2Fill } from "react-icons/bs";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa"; // Import icons for pagination
 import { MdEditSquare } from "react-icons/md";
 import Swal from "sweetalert2";
 import Divider from "../../context/Divider";
@@ -22,6 +23,8 @@ const EditDeleteProducts: React.FC = () => {
   const [editedPhoto, setEditedPhoto] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1); // Pagination state
+  const productsPerPage = 10; // Number of products per page
 
   // Fetch products from the API
   useEffect(() => {
@@ -153,7 +156,7 @@ const EditDeleteProducts: React.FC = () => {
         {
           method: "DELETE",
           headers: {
-            Authorization: `Bearer ${token}`, //
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -186,6 +189,27 @@ const EditDeleteProducts: React.FC = () => {
     }
   };
 
+  // Pagination logic
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  // Change page
+  const nextPage = () => {
+    if (currentPage < Math.ceil(products.length / productsPerPage)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -209,7 +233,7 @@ const EditDeleteProducts: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
+            {currentProducts.map((product) => (
               <tr key={product.id}>
                 <td>
                   <div className="flex items-center space-x-4">
@@ -248,6 +272,29 @@ const EditDeleteProducts: React.FC = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Pagination */}
+      <div className="flex justify-center items-center mt-4">
+        <button
+          onClick={prevPage}
+          disabled={currentPage === 1}
+          className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FaChevronLeft className="h-5 w-5" />
+        </button>
+        <span className="mx-4 font-medium">
+          Page {currentPage} of {Math.ceil(products.length / productsPerPage)}
+        </span>
+        <button
+          onClick={nextPage}
+          disabled={
+            currentPage === Math.ceil(products.length / productsPerPage)
+          }
+          className="p-2 rounded-full bg-gray-200 hover:bg-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FaChevronRight className="h-5 w-5" />
+        </button>
       </div>
 
       {/* Edit Modal */}

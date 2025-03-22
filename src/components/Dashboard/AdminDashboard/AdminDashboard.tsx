@@ -1,11 +1,13 @@
 import { JSX, useState } from "react";
-import { AiOutlineDashboard, AiOutlineSetting } from "react-icons/ai";
-import { FiBarChart, FiUsers } from "react-icons/fi";
+import { AiFillProduct, AiOutlineDashboard } from "react-icons/ai";
+import { FiUsers } from "react-icons/fi";
 import { IoBagAddOutline } from "react-icons/io5";
+import { MdManageAccounts } from "react-icons/md";
 import { RiFileList2Line } from "react-icons/ri";
 import MenuDeshboard from "../../MenuDashboard/MenuDeshboard";
 import AddProducts from "../../Products/AddProducts";
 import ProductEditDelete from "../../Products/EditDeleteProducts";
+import UserNexus from "../../UserNexus/UserNexus";
 
 const AdminDashboard = () => {
   const [selectedPage, setSelectedPage] = useState("Dashboard");
@@ -25,14 +27,14 @@ const AdminDashboard = () => {
       content: <AddProducts />,
     },
     ProductDetails: {
-      label: "Management",
-      icon: <FiBarChart className="text-xl" />,
+      label: "Inventory Control",
+      icon: <AiFillProduct className="text-xl" />,
       content: <ProductEditDelete />,
     },
-    Settings: {
-      label: "Settings",
-      icon: <AiOutlineSetting className="text-xl" />,
-      content: <h2 className="text-xl font-bold">Settings Page</h2>,
+    ManageUser: {
+      label: "User Nexus",
+      icon: <MdManageAccounts className="text-xl" />,
+      content: <UserNexus />,
     },
     Reports: {
       label: "Reports",
