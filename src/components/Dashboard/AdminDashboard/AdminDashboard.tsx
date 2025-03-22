@@ -5,6 +5,7 @@ import { IoBagAddOutline } from "react-icons/io5";
 import { RiFileList2Line } from "react-icons/ri";
 import MenuDeshboard from "../../MenuDashboard/MenuDeshboard";
 import AddProducts from "../../Products/AddProducts";
+import ProductEditDelete from "../../Products/EditDeleteProducts";
 
 const AdminDashboard = () => {
   const [selectedPage, setSelectedPage] = useState("Dashboard");
@@ -16,25 +17,17 @@ const AdminDashboard = () => {
     Dashboard: {
       label: "Dashboard",
       icon: <AiOutlineDashboard className="text-xl" />,
-      content: (
-        <h2 className="text-xl font-bold">
-          <MenuDeshboard />
-        </h2>
-      ),
+      content: <MenuDeshboard />,
     },
     AddProduct: {
       label: "Add Product",
       icon: <IoBagAddOutline className="text-xl" />,
-      content: (
-        <h2 className="text-xl font-bold">
-          <AddProducts />
-        </h2>
-      ),
+      content: <AddProducts />,
     },
-    Analytics: {
-      label: "Analytics",
+    ProductDetails: {
+      label: "Management",
       icon: <FiBarChart className="text-xl" />,
-      content: <h2 className="text-xl font-bold">Analytics Page</h2>,
+      content: <ProductEditDelete />,
     },
     Settings: {
       label: "Settings",

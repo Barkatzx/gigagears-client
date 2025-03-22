@@ -93,7 +93,7 @@ const AddCart = () => {
                 className="cursor-pointer mt-4"
               >
                 <h3 className="text-lg font-bold">{product.name}</h3>
-                <p className="text-blue-600 font-bold mt-2">৳{product.price}</p>
+                <p className="text-blue-600 font-bold mt-2">${product.price}</p>
               </div>
               <button
                 onClick={(e) => {
